@@ -40,7 +40,7 @@ namespace ElNami
             {
                 return;
             }
-            Game.PrintChat("<font color='#CC0000'>ElNami by jQuery v1.0.0.0</font>");
+            Game.PrintChat("<font color='#CC0000'>ElNami by jQuery v1.0.0.1</font>");
 
             #region Spell Data
 
@@ -150,13 +150,17 @@ namespace ElNami
         private static void Combo()
         {
             var target = TargetSelector.GetTarget(_w.Range, TargetSelector.DamageType.Magical);
-            var ultTarget = TargetSelector.GetTarget(_r.Range, TargetSelector.DamageType.Magical);
             if (target == null || !target.IsValid)
             {
                 return;
             }
 
-            /* todo: check mana, mana manager for combo spells, cast e on ally who is the closest to selected target */
+            /* 
+            to-do: 
+            - check mana, mana manager for combo spells, 
+            - cast e on ally who is the closest to selected target,
+            - hitchance menu, q now HitChance.High.
+            */
 
             SpellDataInst Qmana = Player.Spellbook.GetSpell(SpellSlot.Q);
             SpellDataInst Wmana = Player.Spellbook.GetSpell(SpellSlot.W);
@@ -247,6 +251,7 @@ namespace ElNami
             {
                 _q.Cast(ObjectManager.Player);
             }
+
             else if (sender.IsValidTarget(_q.Range) && args.DangerLevel == Interrupter2.DangerLevel.High && _q.IsReady() &&
                      !_q.IsReady())
             {
