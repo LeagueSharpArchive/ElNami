@@ -316,7 +316,7 @@ namespace ElNami
             foreach (var ally in ObjectManager.Get<Obj_AI_Hero>().Where(champ => champ.IsAlly))
             {
                 castEMenu.AddItem(
-                    new MenuItem("casteonally" + ally.BaseSkinName, string.Format("Ult {0}", ally.BaseSkinName)).SetValue(true));
+                    new MenuItem("casteonally" + ally.BaseSkinName, string.Format("Cast E: {0}", ally.BaseSkinName)).SetValue(true));
             }
 
 
