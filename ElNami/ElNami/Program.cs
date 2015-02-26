@@ -315,10 +315,8 @@ namespace ElNami
             var castEMenu = _menu.AddSubMenu(new Menu("Cast E on", "CastEOn"));
             foreach (var ally in ObjectManager.Get<Obj_AI_Hero>().Where(champ => champ.IsAlly))
             {
-                castEMenu.AddItem(
-                    new MenuItem("casteonally" + ally.BaseSkinName, string.Format("Cast E: {0}", ally.BaseSkinName)).SetValue(true));
+                castEMenu.AddItem(new MenuItem("casteonally" + ally.BaseSkinName, string.Format("Cast E: {0}", ally.BaseSkinName)).SetValue(true));
             }
-
 
             //Harass
             var harassMenu = _menu.AddSubMenu(new Menu("Harass", "H"));
