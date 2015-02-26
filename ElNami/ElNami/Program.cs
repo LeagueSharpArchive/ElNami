@@ -40,7 +40,7 @@ namespace ElNami
             {
                 return;
             }
-            Game.PrintChat("<font color='#CC0000'>ElNami by jQuery v1.0.0.1</font>");
+            Notifications.AddNotification("ElNami by jQuery v1.0.0.2", 10000);
 
             #region Spell Data
 
@@ -105,7 +105,6 @@ namespace ElNami
 
         private static void HealSelf()
         {
-            SpellDataInst Emana = Player.Spellbook.GetSpell(SpellSlot.E);
 
             if (Player.HasBuff("Recall") || Utility.InFountain(Player))
             {
@@ -155,17 +154,6 @@ namespace ElNami
                 return;
             }
 
-            /* 
-            to-do: 
-            - check mana, mana manager for combo spells, 
-            - cast e on ally who is the closest to selected target,
-            - hitchance menu, q now HitChance.High.
-            */
-
-            SpellDataInst Qmana = Player.Spellbook.GetSpell(SpellSlot.Q);
-            SpellDataInst Wmana = Player.Spellbook.GetSpell(SpellSlot.W);
-            SpellDataInst Emana = Player.Spellbook.GetSpell(SpellSlot.E);
-
             if (_menu.Item("QCombo").GetValue<bool>() && _q.IsReady())
             {
                 _q.CastIfHitchanceEquals(target, HitChance.High);
@@ -176,9 +164,19 @@ namespace ElNami
                 _w.Cast();
             }
 
+
+
             if (_menu.Item("ECombo").GetValue<bool>() && _e.IsReady())
             {
-                _e.Cast(Player);
+                //_e.Cast(Player);
+                foreach (var ally in from ally in ObjectManager.Get<Obj_AI_Hero>()
+                                       where (ally.IsAlly) 
+                                       where _menu.Item("casteonally" + ally.BaseSkinName).GetValue<bool>()
+                                       && (ObjectManager.Player.ServerPosition.Distance(ally.Position) < _e.Range)
+                                     select ally)
+                {
+                    _e.Cast(ally);
+                }
             }
 
             if (_menu.Item("RCombo").GetValue<bool>() && !_q.IsReady() && _r.IsReady() &&
@@ -313,6 +311,15 @@ namespace ElNami
             comboMenu.AddItem(new MenuItem("UseIgnite", "Use Ignite in combo when killable").SetValue(true));
             comboMenu.AddItem(new MenuItem("ComboActive", "Combo!").SetValue(new KeyBind(32, KeyBindType.Press)));
 
+            // e
+            var castEMenu = _menu.AddSubMenu(new Menu("Cast E on", "CastEOn"));
+            foreach (var ally in ObjectManager.Get<Obj_AI_Hero>().Where(champ => champ.IsAlly))
+            {
+                castEMenu.AddItem(
+                    new MenuItem("casteonally" + ally.BaseSkinName, string.Format("Ult {0}", ally.BaseSkinName)).SetValue(true));
+            }
+
+
             //Harass
             var harassMenu = _menu.AddSubMenu(new Menu("Harass", "H"));
             harassMenu.AddItem(new MenuItem("HarassQ", "Use Q").SetValue(true));
@@ -335,9 +342,14 @@ namespace ElNami
             interruptMenu.AddItem(new MenuItem("InterQ", "Use Q").SetValue(true));
             interruptMenu.AddItem(new MenuItem("InterR", "Use R").SetValue(false));
 
-            //nigga who made this
+            //Here comes the moneyyy, money, money, moneyyyy
             var credits = _menu.AddSubMenu(new Menu("Credits", "jQuery"));
-            credits.AddItem(new MenuItem("Thanks", "By jQuery"));
+            credits.AddItem(new MenuItem("ElRengar.Paypal", "if you would like to donate via paypal:"));
+            credits.AddItem(new MenuItem("ElRengar.Email", "info@zavox.nl"));
+
+            _menu.AddItem(new MenuItem("422442fsaafs4242f", ""));
+            _menu.AddItem(new MenuItem("422442fsaafsf", "Version: 1.0.0.2"));
+            _menu.AddItem(new MenuItem("fsasfafsfsafsa", "Made By jQuery"));
 
             _menu.AddToMainMenu();
         }
