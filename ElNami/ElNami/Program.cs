@@ -32,6 +32,32 @@ namespace ElNami
 
         #endregion
 
+        #region hitchance
+
+        private static HitChance CustomHitChance
+        {
+            get { return GetHitchance(); }
+        }
+
+        private static HitChance GetHitchance()
+        {
+            switch (_menu.Item("ElNami.hitChance").GetValue<StringList>().SelectedIndex)
+            {
+                case 0:
+                    return HitChance.Low;
+                case 1:
+                    return HitChance.Medium;
+                case 2:
+                    return HitChance.High;
+                case 3:
+                    return HitChance.VeryHigh;
+                default:
+                    return HitChance.Medium;
+            }
+        }
+
+        #endregion
+
         #region Gameloaded 
 
         private static void Game_OnGameLoad(EventArgs args)
@@ -40,7 +66,7 @@ namespace ElNami
             {
                 return;
             }
-            Notifications.AddNotification("ElNami by jQuery v1.0.0.2", 10000);
+            Notifications.AddNotification("ElNami by jQuery v1.0.0.3", 10000);
 
             #region Spell Data
 
@@ -156,7 +182,7 @@ namespace ElNami
 
             if (_menu.Item("QCombo").GetValue<bool>() && _q.IsReady())
             {
-                _q.CastIfHitchanceEquals(target, HitChance.High);
+                _q.CastIfHitchanceEquals(target, CustomHitChance);
             }
 
             if (_menu.Item("WCombo").GetValue<bool>() && _w.IsReady())
@@ -307,6 +333,7 @@ namespace ElNami
             comboMenu.AddItem(new MenuItem("WCombo", "Use W").SetValue(true));
             comboMenu.AddItem(new MenuItem("ECombo", "Use E").SetValue(true));
             comboMenu.AddItem(new MenuItem("RCombo", "Use R").SetValue(true));
+            comboMenu.AddItem(new MenuItem("ElNami.hitChance", "Hitchance").SetValue(new StringList(new[] { "Low", "Medium", "High", "Very High" }, 3)));
             comboMenu.AddItem(new MenuItem("RCount", "Use ult in combo if enemies >= ")).SetValue(new Slider(2, 1, 5));
             comboMenu.AddItem(new MenuItem("UseIgnite", "Use Ignite in combo when killable").SetValue(true));
             comboMenu.AddItem(new MenuItem("ComboActive", "Combo!").SetValue(new KeyBind(32, KeyBindType.Press)));
