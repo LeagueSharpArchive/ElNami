@@ -85,7 +85,7 @@ namespace ElNami
             #endregion
 
             //Event handlers
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
             _q.SetSkillshot(1f, 150f, float.MaxValue, false, SkillshotType.SkillshotCircle);
             _r.SetSkillshot(0.5f, 260f, 850f, false, SkillshotType.SkillshotLine);
             Interrupter2.OnInterruptableTarget += Interrupter2_OnInterruptableTarget;
@@ -189,8 +189,6 @@ namespace ElNami
             {
                 _w.Cast();
             }
-
-
 
             if (_menu.Item("ECombo").GetValue<bool>() && _e.IsReady())
             {
@@ -373,7 +371,7 @@ namespace ElNami
             credits.AddItem(new MenuItem("ElRengar.Email", "info@zavox.nl"));
 
             _menu.AddItem(new MenuItem("422442fsaafs4242f", ""));
-            _menu.AddItem(new MenuItem("422442fsaafsf", "Version: 1.0.0.2"));
+            _menu.AddItem(new MenuItem("422442fsaafsf", "Version: 1.0.0.4"));
             _menu.AddItem(new MenuItem("fsasfafsfsafsa", "Made By jQuery"));
 
             _menu.AddToMainMenu();
